@@ -1,0 +1,13 @@
+--- 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: failure
+spec:
+  restartPolicy: OnFailure
+  Container:
+    - name: failure
+      image: alpine
+      args:
+        - sleep
+        - 3sm

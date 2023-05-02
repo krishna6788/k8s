@@ -1,0 +1,64 @@
+### POD LIFECYCLE ##
+--> A Pod's status field is a Podstatus object, WHich has a phase field.
+--> It consists of the "FIVE" states(Phases). They are;
+      1.Pending
+      2.Running
+      3.Succeded
+      4.Failed
+      5.Unknown
+      - PENDING: The Pod has been accepted by the Kubernetes cluster, but one or more of the containers has not been set up and made ready to run. 
+                This includes time a Pod spends waiting to be scheduled as well as the time spent downloading container images over the network.
+      
+      - RUNNING: It means our pod is running without any problem.
+
+      - SUCCEDED: All containers in the pod have terminated in success, and will not be restarted.
+
+      - FAILED: All containers in the Pod have terminated, and at least one container has terminated in failure. 
+                That is, the container either exited with non-zero status or was terminated by the system.
+
+      - UNKNOWN: For some reason the state of the Pod could not be obtained. 
+                 This phase typically occurs due to an error in communicating with the node where the Pod should be running.
+
+
+
+### CONTAINER STATES ###
+
+--> K8S tracks the state of each container inside a pod.
+--> In consists of three states.
+      1. Waiting
+      2. Running
+      3. Terminated.
+      - WAITING: If a container is not in either the Running or Terminated state, it is Waiting.
+
+      - RUNNING: The Running status indicates that a container is executing without issues.
+
+      - TERMINATED: A container in the Terminated state began execution and then either ran to completion or failed for some reason.
+
+
+### CONTAINER RESTART POLICY ###
+
+--> The spec of a Pod has a restartPolicy field with possible values Always, OnFailure, and Never. "THE DEFAULT VALUE IS ALWAYS".
+      The restartPolicy applies to all containers in the Pod. restartPolicy only refers to restarts of the containers by the kubelet on the same node. 
+      After containers in a Pod exit, the kubelet restarts them with an exponential back-off delay (10s, 20s, 40s, …), that is capped at five minutes. 
+      Once a container has executed for 10 minutes without any problems, the kubelet resets the restart backoff timer for that container.
+--> The terms are,
+       *RestartAlways
+       *RestartNever
+       *RestartOnFailure
+
+
+
+
+--- 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: Always
+spec:
+  restartPolicy: Always
+  Container:
+    - name: alpinealways
+      image: alpine
+      args:
+        - sleep
+        - 3s
